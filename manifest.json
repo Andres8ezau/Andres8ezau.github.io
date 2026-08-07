@@ -3,13 +3,13 @@
   "name": "Ciencia en el Extranjero",
   "icons": [
     {
-      "src": "Logo_Ciencia.png",
+      "src": "Logo_Ciencia_new.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#0d1b3e",
-  "background_color": "#060810"
+  "theme_color": "#f7f7f7",
+  "background_color": "#f7f7f7"
 }

@@ -2,15 +2,19 @@ const SITE_DATA = {
   intro: {
     title: "Ciencia en el Extranjero",
     subtitle:
-      "Si eres un estudiante de ciencias en México y estás interesado en conseguir una estancia o un verano de investigación en el extranjero, existen una increíble variedad de programas a los que puedes aplicar. Sigue estos pasos para hacerlo realidad.",
+      "Si eres un estudiante mexicano y estás interesado en aprender mas sobre como conseguir una estancia o un verano de investigación, este es el lugar correcto para encontrar una increíble variedad de programas a los que puedes aplicar.",
     steps: [
-      "En primer lugar, debes investigar qué programas de intercambio están disponibles para estudiantes de tu área de estudio.",
+      "En primer lugar, es importante conocer tus habilidades actuales y lo que te gustaria aprender.",
       "Una vez que hayas identificado los programas que te interesan, debes asegurarte de cumplir con los requisitos de elegibilidad y preparar una solicitud completa y detallada (CV, carta de motivos, cartas de recomendación, etc.). Incluye tus antecedentes académicos, experiencia en investigación, idiomas y cualquier otra información relevante.",
       "También es recomendable contactar a profesores o investigadores en las universidades extranjeras que te interesan para establecer un primer contacto y aumentar tus posibilidades de ser aceptado. Si la convocatoria especifica que no contactes a los profesores, bajo ninguna circunstancia lo hagas, ya que esto puede provocar el rechazo automático.",
       "Por último, debes ser proactivo en la búsqueda de financiamiento para tu estancia o verano de investigación en el extranjero. Muchas instituciones ofrecen becas y subvenciones para estudiantes internacionales, pero debes estar atento a los plazos de solicitud y cumplir con los requisitos de elegibilidad.",
     ],
+    greeting: [
+      "Bienvenido a mi sitio web de Ciencia en el Extranjero, actualmente soy un estudiante de posgrado en Quimica, mi pasion siempre ha sido la ciencia pero asi como todos, empezar a hacer ciencia no fue la parte mas dificil, sino encontrar en donde poder hacerla. Aqui encontraras uns coleccion de herramientas, recursos y consejos que pueden servirte para tu carrera de investigacion. No olvides que no importa cuantas veces lo tengas que intentar, sino seguir intentandolo hasta que lo logres. ",
+      "Si tienes alguna pregunta o sugerencia, no dudes en contactarme a través de mi correo electrónico o también puedes encontrarme en mi perfil de LinkedIn.",
+      "Gracias por visitar mi sitio web y espero que te sea útil. ¡Buena suerte en tu carrera de investigación!",
+    ],
   },
-
   opportunities: {
     international: [
       { program: "iScholar", country: "Estados Unidos", institution: "University of Rochester", level: ["Universidad"], funding: "full", link: "https://www.sas.rochester.edu/chm/undergraduate/i-scholar.html" },
@@ -21,7 +25,7 @@ const SITE_DATA = {
       { program: "Amgen Scholars", country: "Japón", institution: "AMGEN", level: ["Universidad"], funding: "full", link: "https://amgenscholars.com/" },
       { program: "SURF-CTC", country: "Estados Unidos", institution: "University of Minnesota", level: ["Universidad"], funding: "full", link: "https://cse.umn.edu/ctc/surf" },
       { program: "KAUST VSRP", country: "Arabia Saudita", institution: "King Abdullah University of Science and Technology", level: ["Universidad", "Maestría"], funding: "full", link: "https://vsrp.kaust.edu.sa/about-vsrp" },
-      { program: "Dr. Bessie F. Lawrence ISSI", country: "Israel", institution: "Weizmann Institute of Science", level: ["Preparatoria", "Universidad"], funding: "full", link: "https://davidson.weizmann.ac.il/en/programs/issi" },
+      { program: "NIMS Internship Program", country: "Japón", institution: "National Institute for Materials Science", level: ["Universidad", "Posgrado"], funding: "partial", link: "https://www.nims.go.jp/eng/hr-development/internship.html" },
       { program: "GIP-GIST", country: "Corea", institution: "Gwangju Institute of Science and Technology", level: ["Universidad", "Maestría"], funding: "partial", link: "https://ipa.gist.ac.kr/ipa/html/sub03/030102.html" },
       { program: "MaxSIP", country: "Alemania", institution: "Instituto Max Planck", level: ["Universidad"], funding: "partial", link: "https://imprs-ls.opencampus.net/en/MaxSIP" },
       { program: "iSURE", country: "Estados Unidos", institution: "University Of Notre Dame", level: ["Universidad", "Maestría"], funding: "full", link: "https://ndi-sa.nd.edu/index.cfm?FuseAction=Programs.ViewProgramAngular&id=10096" },
@@ -39,8 +43,9 @@ const SITE_DATA = {
       { program: "Veranos UG", city: "Guanajuato", institution: "Universidad de Guanajuato", level: ["Preparatoria", "Universidad", "Posgrado"], funding: "partial", link: "https://www.ugto.mx/veranos" },
       { program: "Verano Delfín", city: "México", institution: "CONACYT", level: ["Universidad"], funding: "partial", link: "https://www.programadelfin.org.mx/" },
       { program: "Verano de la Ciencia de la Región Centro", city: "México", institution: "N/A", level: ["Universidad"], funding: "none", link: "https://www.veranoregional.org/" },
-      { program: "Taller de Ciencias para Jóvenes (Campeche)", city: "México", institution: "N/A", level: ["Preparatoria"], funding: "full", link: "https://www.tcjcampeche.com.mx/" },
+      { program: "Taller de Ciencias para Jóvenes (Campeche)", city: "Campeche", institution: "N/A", level: ["Preparatoria"], funding: "full", link: "https://www.tcjcampeche.com.mx/" },
       { program: "Taller de Ciencia Viva", city: "México", institution: "CINVESTAV", level: ["Preparatoria"], funding: "full", link: "https://www.facebook.com/cienciavivairapuato/?locale=es_LA" },
+      { program: "Clubes De Ciencia Mx", city: "México", institution: "CdeCMx A.C.", level: ["Preparatoria", "Universidad"], funding: "none", link: "https://clubesdeciencia.mx/" },
     ],
   },
 
@@ -85,7 +90,7 @@ const SITE_DATA = {
         name: "Científico Latino",
         link: "https://www.cientificolatino.com/",
         description:
-          'Recursos sobre cartas de motivación, CV académicos y cómo aplicar al posgrado en EU.',
+          'Ejemplos de cartas de motivación formales, CV académicos y guias para aplicar a un programa de posgrado en EU.',
       },
       {
         name: "Graduate Student Mentorship Initiative (GSMI-CL)",
@@ -104,7 +109,7 @@ const SITE_DATA = {
     external: [
       {
         name: "Repositorio CienciaEnElExtranjero",
-        description: "Accede al repositorio original con más recursos y archivos.",
+        description: "Accede al repositorio original.",
         link: "https://github.com/Andres8ezau/CienciaEnElExtranjero",
       },
     ],

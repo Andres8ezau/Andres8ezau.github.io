@@ -46,10 +46,12 @@ function renderOpportunities() {
       <h2>Oportunidades de estancias de investigación / veranos</h2>
       <p>Programas nacionales e internacionales para estudiantes de ciencias en México.</p>
     </div>
-    <h3 class="subsection-title">Internacional</h3>
-    ${renderOpportunitiesTable(international, false)}
-    <h3 class="subsection-title">Nacional</h3>
-    ${renderOpportunitiesTable(national, true)}
+    <div class="panel-body">
+      <h3 class="subsection-title">Internacional</h3>
+      ${renderOpportunitiesTable(international, false)}
+      <h3 class="subsection-title">Nacional</h3>
+      ${renderOpportunitiesTable(national, true)}
+    </div>
   `;
 }
 
@@ -64,7 +66,7 @@ function formatDate(dateStr) {
 function renderBlog() {
   const posts = SITE_DATA.blog;
   if (!posts.length) {
-    return `<div class="empty-state"><h2>Blog</h2><p>Próximamente publicaremos artículos y guías.</p></div>`;
+    return `<div class="empty-state"><p>Próximamente se compartiran artículos y guías.</p></div>`;
   }
 
   const cards = posts
@@ -85,7 +87,18 @@ function renderBlog() {
       <h2>Blog</h2>
       <p>Artículos, guías y experiencias para ayudarte en tu camino hacia la ciencia en el extranjero.</p>
     </div>
-    <div class="blog-grid">${cards}</div>
+    <div class="panel-body">
+      <div class="blog-grid">${cards}</div>
+    </div>
+  `;
+}
+
+function renderCrashCourse() {
+  const { steps } = SITE_DATA.intro;
+  const stepItems = steps.map((text) => `<li>${text}</li>`).join("");
+  return `
+    <h3 class="subsection-title">Crash Course de Ciencia en el Extranjero</h3>
+    <ol class="steps-list">${stepItems}</ol>
   `;
 }
 
@@ -146,64 +159,79 @@ function renderResources() {
       <h2>Recursos adicionales</h2>
       <p>Plantillas, organizaciones de apoyo y archivos útiles para tu aplicación.</p>
     </div>
+    <div class="panel-body">
+      ${renderCrashCourse()}
 
-    <h3 class="subsection-title">Plantillas de CV</h3>
-    <div class="resources-grid">${cvCards}</div>
+      <h3 class="subsection-title">Plantillas de CV</h3>
+      <div class="resources-grid">${cvCards}</div>
 
-    <h3 class="subsection-title">Organizaciones y mentorías</h3>
-    <div class="resources-grid">${orgCards}</div>
+      <h3 class="subsection-title">Organizaciones y mentorías</h3>
+      <div class="resources-grid">${orgCards}</div>
 
-    <h3 class="subsection-title">Archivos</h3>
-    <div class="resource-card">
+      <h3 class="subsection-title">Archivos</h3>
       <ul class="file-list">${fileItems}</ul>
-    </div>
 
-    <h3 class="subsection-title">Enlaces externos</h3>
-    <div class="resources-grid">${externalItems}</div>
+      <h3 class="subsection-title">Enlaces externos</h3>
+      <div class="resources-grid">${externalItems}</div>
+    </div>
   `;
 }
 
-function renderHero() {
-  const { title, subtitle, steps } = SITE_DATA.intro;
-  const stepCards = steps
-    .map(
-      (text, i) => `
-    <div class="step-card">
-      <span class="step-number">${i + 1}</span>
-      <p>${text}</p>
-    </div>`
-    )
-    .join("");
+function renderInicio() {
+  return renderHome() + renderGreeting();
+}
 
+function renderHome() {
+  const { subtitle } = SITE_DATA.intro;
   return `
-    <section class="greet-main">
-      <div class="greeting-main">
-        <div class="greeting-text-div">
-          <h1 class="greeting-text">${title}</h1>
-          <p class="greeting-text-p">${subtitle}</p>
-        </div>
-        <div class="greeting-image-div">
-          <img src="Logo_Ciencia.png" alt="Logo Ciencia en el Extranjero" width="220" height="220" />
-        </div>
+    <section class="home-section" aria-label="Bienvenida">
+      <img
+        class="hero-logo-title"
+        src="Logo_Ciencia_new_Letras.png"
+        alt="Ciencia en el Extranjero"
+        width="480"
+        height="auto"
+      />
+      <p class="home-subtitle">${subtitle}</p>
+    </section>
+  `;
+}
+
+function renderGreeting() {
+  const { greeting } = SITE_DATA.intro;
+  const paragraphs = greeting.map((text) => `<p>${text}</p>`).join("");
+  return `
+    <section id="greeting" class="greeting-section" aria-label="Presentación">
+      <img
+        class="greeting-photo"
+        src="Me_photo_landing_page.jpeg"
+        alt="Andrés Pérez-Hernández"
+        width="280"
+        height="280"
+      />
+      <div class="greeting-content">
+        <h2>¡Hola! Me llamo Andrés</h2>
+        ${paragraphs}
       </div>
-      <div class="steps-grid">${stepCards}</div>
     </section>
   `;
 }
 
 function initTabs() {
   const panels = {
+    inicio: document.getElementById("panel-inicio"),
     oportunidades: document.getElementById("panel-oportunidades"),
     blog: document.getElementById("panel-blog"),
     recursos: document.getElementById("panel-recursos"),
   };
 
+  document.getElementById("panel-inicio").innerHTML = renderInicio();
   document.getElementById("panel-oportunidades").innerHTML = renderOpportunities();
   document.getElementById("panel-blog").innerHTML = renderBlog();
   document.getElementById("panel-recursos").innerHTML = renderResources();
-  document.getElementById("hero").innerHTML = renderHero();
 
   const buttons = document.querySelectorAll(".tab-btn");
+  const validTabs = Object.keys(panels);
 
   function activateTab(tabId) {
     buttons.forEach((btn) => {
@@ -219,9 +247,15 @@ function initTabs() {
     btn.addEventListener("click", () => activateTab(btn.dataset.tab));
   });
 
+  window.addEventListener("hashchange", () => {
+    const tabFromHash = location.hash.replace("#", "");
+    const resolved = tabFromHash === "home" ? "inicio" : tabFromHash;
+    if (validTabs.includes(resolved)) activateTab(resolved);
+  });
+
   const hash = location.hash.replace("#", "");
-  const validTabs = Object.keys(panels);
-  activateTab(validTabs.includes(hash) ? hash : "oportunidades");
+  const tabFromHash = hash === "home" ? "inicio" : hash;
+  activateTab(validTabs.includes(tabFromHash) ? tabFromHash : "inicio");
 }
 
 document.addEventListener("DOMContentLoaded", initTabs);
