@@ -21,9 +21,9 @@ const SITE_DATA = {
       { program: "ENLACE", country: "Estados Unidos", institution: "University of California San Diego", level: ["Preparatoria", "Universidad", "Posgrado"], funding: "partial", link: "http://resilientmaterials.ucsd.edu/ENLACE" },
       { program: "Globalink", country: "Canadá", institution: "MITACS", level: ["Universidad"], funding: "full", link: "https://www.mitacs.ca/en/programs/globalink" },
       { program: "OIST Research", country: "Japón", institution: "Okinawa Institute of Science and Technology", level: ["Universidad", "Posgrado"], funding: "full", link: "https://admissions.oist.jp/oist-research-internship-program-description" },
-      { program: "ICIQ Summer Fellows", country: "España", institution: "Institute of Chemical Research of Catalonia", level: ["Universidad"], funding: "partial", link: "https://careers.iciq.org/jobs/2557776-iciq-summer-fellowship-program-call-2023" },
+      { program: "ICIQ Summer Fellows", country: "España", institution: "Institute of Chemical Research of Catalonia", level: ["Universidad"], funding: "partial", link: "https://iciq.org/careers/undergraduates/iciq-summer-fellowships-programme/" },
       { program: "Amgen Scholars", country: "Japón", institution: "AMGEN", level: ["Universidad"], funding: "full", link: "https://amgenscholars.com/" },
-      { program: "SURF-CTC", country: "Estados Unidos", institution: "University of Minnesota", level: ["Universidad"], funding: "full", link: "https://cse.umn.edu/ctc/surf" },
+      { program: "NSF-REU/Lando/CSP Program", country: "Estados Unidos", institution: "University of Minnesota", level: ["Universidad"], funding: "full", link: "https://cse.umn.edu/chem/nsf-reulandocsp-program" },
       { program: "KAUST VSRP", country: "Arabia Saudita", institution: "King Abdullah University of Science and Technology", level: ["Universidad", "Maestría"], funding: "full", link: "https://vsrp.kaust.edu.sa/about-vsrp" },
       { program: "NIMS Internship Program", country: "Japón", institution: "National Institute for Materials Science", level: ["Universidad", "Posgrado"], funding: "partial", link: "https://www.nims.go.jp/eng/hr-development/internship.html" },
       { program: "GIP-GIST", country: "Corea", institution: "Gwangju Institute of Science and Technology", level: ["Universidad", "Maestría"], funding: "partial", link: "https://ipa.gist.ac.kr/ipa/html/sub03/030102.html" },
@@ -36,7 +36,7 @@ const SITE_DATA = {
       { program: "EPFL School of Life Sciences SPR", country: "Suiza", institution: "Escuela Politécnica Federal de Lausana", level: ["Universidad", "Maestría"], funding: "full", link: "https://www.epfl.ch/schools/sv/education/summer-research-program/" },
       { program: "Openlab Summer Student Programme", country: "Suiza", institution: "CERN", level: ["Universidad", "Maestría"], funding: "partial", link: "https://jobs.smartrecruiters.com/CERN/743999862723511-cern-openlab-summer-student-programme-2023" },
       { program: "NCTS-TCA Summer Student Program", country: "Taiwán", institution: "NCTS", level: ["Universidad"], funding: "partial", link: "https://nctstca.github.io/events/202307-tcassp/" },
-      { program: "US-Mexico Intern Program", country: "EU", institution: "CETUSA", level: ["Universidad", "Recién Graduados"], funding: "partial", link: "https://www.cetusa.org/trainee-internship-programs-3/us-mexico-intern-program/" },
+      { program: "US-Mexico Intern Program", country: "EU", institution: "CETUSA", level: ["Universidad", "Recién Graduados"], funding: "partial", link: "https://www.cetusa.org/trainee-internship-programs/us-mexico-intern-program/" },
       { program: "Yale Young Global Scholars (YYGS)", country: "EU", institution: "Yale University", level: ["Preparatoria"], funding: "partial", link: "https://globalscholars.yale.edu/about" },
     ],
     national: [
@@ -98,6 +98,12 @@ const SITE_DATA = {
         description:
           "Programa de mentorías 1 a 1 para prepararte a aplicar a programas de posgrado en Estados Unidos (apertura en mayo-junio).",
       },
+      {
+        name: "Academic Memories (Sci-Comms@Jacinda)",
+        link: "https://www.academicmemories.com/",
+        description:
+          "Divulgacion cientifica y educativa, Desmitificando los procesos academicos y apoyo al crecimiento personal.",
+      },
     ],
     files: [
       {
@@ -111,6 +117,7 @@ const SITE_DATA = {
         name: "Repositorio CienciaEnElExtranjero",
         description: "Accede al repositorio original.",
         link: "https://github.com/Andres8ezau/CienciaEnElExtranjero",
+        image: "graphics/png-cartoon-globe-vintage-sticker.png",
       },
     ],
   },

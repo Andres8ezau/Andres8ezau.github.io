@@ -144,12 +144,15 @@ function renderResources() {
   const externalItems = external
     .map(
       (e) => `
-    <div class="resource-card">
-      <h3>${e.name}</h3>
-      <p>${e.description}</p>
-      <div class="resource-links">
-        <a class="main-button" href="${e.link}" target="_blank" rel="noopener noreferrer">Abrir repositorio</a>
+    <div class="external-feature${e.image ? " external-feature--with-image" : ""}">
+      <div class="resource-card">
+        <h3>${e.name}</h3>
+        <p>${e.description}</p>
+        <div class="resource-links">
+          <a class="main-button" href="${e.link}" target="_blank" rel="noopener noreferrer">Abrir repositorio</a>
+        </div>
       </div>
+      ${e.image ? `<img class="external-feature-image" src="${e.image}" alt="" width="200" height="200" />` : ""}
     </div>`
     )
     .join("");
@@ -185,13 +188,15 @@ function renderHome() {
   const { subtitle } = SITE_DATA.intro;
   return `
     <section class="home-section" aria-label="Bienvenida">
-      <img
-        class="hero-logo-title"
-        src="Logo_Ciencia_new_Letras.png"
-        alt="Ciencia en el Extranjero"
-        width="480"
-        height="auto"
-      />
+      <div class="home-hero-brand">
+        <img
+          class="hero-logo-title"
+          src="Logo_Ciencia_new_Letras.png"
+          alt="Ciencia en el Extranjero"
+          width="480"
+          height="auto"
+        />
+      </div>
       <p class="home-subtitle">${subtitle}</p>
     </section>
   `;
