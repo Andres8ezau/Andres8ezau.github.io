@@ -70,16 +70,26 @@ function renderBlog() {
   }
 
   const cards = posts
-    .map(
-      (post) => `
-    <article class="blog-card">
-      <time class="blog-date" datetime="${post.date}">${formatDate(post.date)}</time>
-      <h3>${post.title}</h3>
-      <div class="blog-tags">${post.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>
-      <p>${post.excerpt}</p>
-      <a class="main-button read-more" href="${post.link}" target="_blank" rel="noopener noreferrer">Leer más</a>
-    </article>`
-    )
+    .map((post) => {
+      const body = (post.body || []).map((p) => `<p>${p}</p>`).join("");
+      const image = post.image
+        ? `<img class="blog-image" src="${post.image}" alt="" width="220" height="220" />`
+        : "";
+      return `
+    <article class="blog-card" data-post-id="${post.id}">
+      <div class="blog-card-top">
+        <div class="blog-card-copy">
+          <time class="blog-date" datetime="${post.date}">${formatDate(post.date)}</time>
+          <h3>${post.title}</h3>
+          <div class="blog-tags">${post.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>
+          <p class="blog-excerpt">${post.excerpt}</p>
+        </div>
+        ${image}
+      </div>
+      <div class="blog-body">${body}</div>
+      <button class="main-button read-more" type="button" aria-expanded="false">Leer más</button>
+    </article>`;
+    })
     .join("");
 
   return `
@@ -93,12 +103,52 @@ function renderBlog() {
   `;
 }
 
+function initBlogExpand() {
+  document.getElementById("panel-blog").addEventListener("click", (event) => {
+    const button = event.target.closest(".read-more");
+    if (!button) return;
+    const card = button.closest(".blog-card");
+    const isOpen = card.classList.toggle("is-open");
+    button.setAttribute("aria-expanded", String(isOpen));
+    button.textContent = isOpen ? "Cerrar" : "Leer más";
+  });
+}
+
 function renderCrashCourse() {
   const { steps } = SITE_DATA.intro;
-  const stepItems = steps.map((text) => `<li>${text}</li>`).join("");
+  const nodes = steps
+    .map((step, index) => {
+      const title = step.title || `Paso ${index + 1}`;
+      const text = step.text || step;
+      return `
+        <li class="tree-node">
+          <div class="tree-square">
+            <span class="tree-index">${String(index + 1).padStart(2, "0")}</span>
+            <strong class="tree-title">${title}</strong>
+            <p class="tree-text">${text}</p>
+          </div>
+        </li>`;
+    })
+    .join("");
+
   return `
     <h3 class="subsection-title">Crash Course de Ciencia en el Extranjero</h3>
-    <ol class="steps-list">${stepItems}</ol>
+    <div class="code-tree" aria-label="Árbol de decisión del crash course">
+      <div class="code-tree-title">
+        <span>crash_course.py - IDE</span>
+        <span class="code-tree-win">_ □ X</span>
+      </div>
+      <div class="code-tree-menu">
+        <span>Archivo</span>
+        <span>Editar</span>
+        <span>Ver</span>
+        <span>Ayuda</span>
+      </div>
+      <div class="code-tree-editor">
+        <ol class="decision-tree">${nodes}</ol>
+      </div>
+      <div class="code-tree-status">Ln 1, Col 1&nbsp;&nbsp;DOS&nbsp;&nbsp;Python</div>
+    </div>
   `;
 }
 
@@ -234,6 +284,7 @@ function initTabs() {
   document.getElementById("panel-oportunidades").innerHTML = renderOpportunities();
   document.getElementById("panel-blog").innerHTML = renderBlog();
   document.getElementById("panel-recursos").innerHTML = renderResources();
+  initBlogExpand();
 
   const buttons = document.querySelectorAll(".tab-btn");
   const validTabs = Object.keys(panels);

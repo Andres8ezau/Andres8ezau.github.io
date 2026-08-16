@@ -4,10 +4,42 @@ const SITE_DATA = {
     subtitle:
       "Si eres un estudiante mexicano y estás interesado en aprender mas sobre como conseguir una estancia o un verano de investigación, este es el lugar correcto para encontrar una increíble variedad de programas a los que puedes aplicar.",
     steps: [
-      "En primer lugar, es importante conocer tus habilidades actuales y lo que te gustaria aprender.",
-      "Una vez que hayas identificado los programas que te interesan, debes asegurarte de cumplir con los requisitos de elegibilidad y preparar una solicitud completa y detallada (CV, carta de motivos, cartas de recomendación, etc.). Incluye tus antecedentes académicos, experiencia en investigación, idiomas y cualquier otra información relevante.",
-      "También es recomendable contactar a profesores o investigadores en las universidades extranjeras que te interesan para establecer un primer contacto y aumentar tus posibilidades de ser aceptado. Si la convocatoria especifica que no contactes a los profesores, bajo ninguna circunstancia lo hagas, ya que esto puede provocar el rechazo automático.",
-      "Por último, debes ser proactivo en la búsqueda de financiamiento para tu estancia o verano de investigación en el extranjero. Muchas instituciones ofrecen becas y subvenciones para estudiantes internacionales, pero debes estar atento a los plazos de solicitud y cumplir con los requisitos de elegibilidad.",
+      {
+        title: "Conoce tus habilidades",
+        text: "Identifica qué sabes hacer ahora y qué te gustaría aprender en un laboratorio o grupo de investigación.",
+      },
+      {
+        title: "Investiga programas",
+        text: "Busca convocatorias nacionales e internacionales que coincidan con tu área, nivel académico y fechas.",
+      },
+      {
+        title: "Revisa elegibilidad",
+        text: "Confirma promedio, semestre, idioma, nacionalidad y documentos que pide cada convocatoria.",
+      },
+      {
+        title: "Prepara tu CV",
+        text: "Arma un CV académico corto: formación, laboratorio, idiomas y habilidades técnicas.",
+      },
+      {
+        title: "Escribe tu carta",
+        text: "Explica quién eres, por qué ese programa y qué puedes aportar. Personalízala en cada envío.",
+      },
+      {
+        title: "Pide recomendaciones",
+        text: "Contacta a profesores que te conozcan con tiempo. Entrégales tu CV y la convocatoria.",
+      },
+      {
+        title: "Contacta profesores",
+        text: "Si la convocatoria lo permite, escribe un correo breve. Si dice que no contactes, no lo hagas.",
+      },
+      {
+        title: "Busca financiamiento",
+        text: "Revisa becas, plazos y requisitos. No esperes a que te acepten para empezar a buscar apoyo.",
+      },
+      {
+        title: "Envía y da seguimiento",
+        text: "Revisa fechas límite, confirma que el envío llegó y ten un plan B de programas.",
+      },
     ],
     greeting: [
       "Bienvenido a mi sitio web de Ciencia en el Extranjero, actualmente soy un estudiante de posgrado en Quimica, mi pasion siempre ha sido la ciencia pero asi como todos, empezar a hacer ciencia no fue la parte mas dificil, sino encontrar en donde poder hacerla. Aqui encontraras uns coleccion de herramientas, recursos y consejos que pueden servirte para tu carrera de investigacion. No olvides que no importa cuantas veces lo tengas que intentar, sino seguir intentandolo hasta que lo logres. ",
@@ -57,7 +89,13 @@ const SITE_DATA = {
       excerpt:
         "Una guía práctica sobre qué incluir en tu curriculum vitae cuando aplicas a programas de investigación en el extranjero: formato, secciones clave y errores comunes a evitar.",
       tags: ["CV", "Aplicaciones", "Consejos"],
-      link: "https://github.com/Andres8ezau/CienciaEnElExtranjero",
+      image: "graphics/Draw_SacNac.png",
+      body: [
+        "El CV académico no es un currículum laboral tradicional. Su objetivo es mostrar, de forma clara y breve, que tienes la formación, la curiosidad y la disciplina para unirte a un grupo de investigación.",
+        "Empieza con tus datos de contacto, universidad, carrera y promedio si es competitivo. Después, agrega experiencia en laboratorio, proyectos, posters, idiomas y habilidades técnicas (Python, R, técnicas de laboratorio, etc.).",
+        "Evita párrafos largos. Usa viñetas, fechas y resultados concretos: qué hiciste, con qué herramientas y qué aprendiste. Un CV de 1 o 2 páginas suele ser suficiente para veranos de investigación.",
+        "Revisa que no haya errores de ortografía y adapta el orden de las secciones al programa. Si piden un formato específico, síguelo al pie de la letra.",
+      ],
     },
     {
       id: "carta-motivacion",
@@ -66,7 +104,13 @@ const SITE_DATA = {
       excerpt:
         "La carta de motivos es tu oportunidad de mostrar por qué eres el candidato ideal. Aprende a estructurarla, qué destacar y cómo personalizarla para cada programa.",
       tags: ["Carta de motivos", "Aplicaciones"],
-      link: "https://github.com/Andres8ezau/CienciaEnElExtranjero",
+      image: "graphics/Flavonoids_draw.png",
+      body: [
+        "La carta de motivación responde tres preguntas: quién eres, por qué este programa y qué puedes aportar. Si no conectas esas tres piezas, la carta se siente genérica.",
+        "Abre con una anécdota o pregunta científica concreta, no con “siempre me ha gustado la ciencia”. Luego explica cómo tu experiencia te preparó para este laboratorio o convocatoria.",
+        "Personaliza cada carta: menciona un grupo, un paper o una línea de investigación del programa. Demuestra que leíste la convocatoria y que no enviaste el mismo texto a veinte lugares.",
+        "Cierra con una frase clara sobre lo que esperas aprender y cómo eso se conecta con tu siguiente paso académico. Pide a alguien más que la lea antes de enviarla.",
+      ],
     },
     {
       id: "contactar-profesores",
@@ -75,7 +119,13 @@ const SITE_DATA = {
       excerpt:
         "Contactar a investigadores puede aumentar tus posibilidades, pero no siempre es recomendable. Te explicamos cuándo hacerlo y cómo redactar un correo profesional.",
       tags: ["Networking", "Consejos"],
-      link: "https://github.com/Andres8ezau/CienciaEnElExtranjero",
+      image: "graphics/Beta-caroteno_draw.png",
+      body: [
+        "Primero lee la convocatoria. Si dice explícitamente que no contactes a los profesores, no lo hagas: puede ser motivo de rechazo automático.",
+        "Si el programa sí permite o espera un primer contacto, escribe un correo corto: quién eres, qué programa te interesa, por qué su grupo y qué experiencia tienes. Adjunta tu CV en PDF.",
+        "Menciona un paper reciente del laboratorio para mostrar que investigaste. Evita pedir “cualquier proyecto disponible” sin contexto.",
+        "Si no responden en dos o tres semanas, un recordatorio educado está bien. Más de eso suele ser contraproducente. Ten siempre un plan B de programas.",
+      ],
     },
   ],
 
@@ -103,6 +153,12 @@ const SITE_DATA = {
         link: "https://www.academicmemories.com/",
         description:
           "Divulgacion cientifica y educativa, Desmitificando los procesos academicos y apoyo al crecimiento personal.",
+      },
+      {
+        name: "Out in Science, Technology, Engineering, and Mathematics (O-STEM org)",
+        link: "https://ostem.org/",
+        description:
+          "Organizacion que busca apoyar a la comunidad LGTBIQ+ en STEM, brindan apoyo con programas para aplicar a programas de posgrado y becas.",
       },
     ],
     files: [
