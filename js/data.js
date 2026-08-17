@@ -2,7 +2,7 @@ const SITE_DATA = {
   intro: {
     title: "Ciencia en el Extranjero",
     subtitle:
-      "Si eres un estudiante Mexicano/Latinoamericano y estás interesado en aprender mas sobre como conseguir una estancia o un verano de investigación, este es el lugar correcto para encontrar una increíble variedad de programas a los que puedes aplicar.",
+      "Si eres un estudiante Mexicano/Latinoamericano y estás interesado en aprender mas sobre como conseguir una estancia o un verano de investigación, este es el lugar correcto para encontrar una increíble variedad de programas a los que puedes aplicar -> Revisa la sección de Oportunidades y Recursos para estudiantes.",
     steps: [
           {
             title: "Prepara tus documentos",

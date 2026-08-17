@@ -96,7 +96,7 @@ function renderOpportunities() {
   return `
     <div class="section-header">
       <h2>Oportunidades de estancias de investigación / veranos</h2>
-      <p>Programas nacionales e internacionales para estudiantes de ciencias en México.</p>
+      <p>Programas nacionales e internacionales para estudiantes de ciencias en México/Latinoamérica.</p>
     </div>
     <div class="panel-body">
       <form class="opp-filters" id="opp-filters" aria-label="Filtrar oportunidades">
@@ -378,7 +378,10 @@ function renderHome() {
 function renderGreeting() {
   const greeting = SITE_DATA.intro.greeting;
   const intro = (greeting.paragraphs || []).map((text) => `<p>${text}</p>`).join("");
-  const more = (greeting.more || []).map((text) => `<p>${text}</p>`).join("");
+  const moreParagraphs = greeting.more || [];
+  const moreFirst = moreParagraphs[0] ? `<p class="greeting-more-p1">${moreParagraphs[0]}</p>` : "";
+  const moreSecond = moreParagraphs[1] ? `<p class="greeting-more-p2">${moreParagraphs[1]}</p>` : "";
+  const moreRest = moreParagraphs.slice(2).map((text) => `<p>${text}</p>`).join("");
   const closing = (greeting.closing || []).map((text) => formatClosingParagraph(text)).join("");
   const linkedin = greeting.linkedin
     ? `<p class="greeting-linkedin">
@@ -394,13 +397,22 @@ function renderGreeting() {
   return `
     <section id="greeting" class="greeting-section" aria-label="Presentación">
       <div class="greeting-intro">
-        <img
-          class="greeting-photo"
-          src="Me_photo_landing_page.jpeg"
-          alt="Andrés Pérez-Hernández"
-          width="320"
-          height="290"
-        />
+        <div class="greeting-photo-stack">
+          <img
+            class="greeting-photo"
+            src="Me_photo_landing_page.jpeg"
+            alt="Andrés Pérez-Hernández"
+            width="320"
+            height="290"
+          />
+          <img
+            class="greeting-photo-accent"
+            src="graphics/7628375_3695169_together_2.svg"
+            alt=""
+            width="320"
+            height="120"
+          />
+        </div>
         <div class="greeting-lead">
           <h2>${greeting.title || "¡Hola! Me llamo Andrés"}</h2>
           ${intro}
@@ -408,21 +420,34 @@ function renderGreeting() {
       </div>
       <div class="greeting-content">
         <div class="greeting-more">
-          <div class="greeting-more-copy">
-            ${greeting.moreTitle ? `<h3>${greeting.moreTitle}</h3>` : ""}
-            ${more}
+          ${greeting.moreTitle ? `<h3 class="greeting-more-title">${greeting.moreTitle}</h3>` : ""}
+          ${moreFirst}
+          ${moreSecond}
+          <div class="greeting-more-visual greeting-more-visual--ug">
+            <img
+              class="greeting-more-image"
+              src="graphics/Primer_verano_UG.png"
+              alt="Primer verano de investigación en la Universidad de Guanajuato"
+              width="380"
+              height="380"
+            />
           </div>
-          <img
-            class="greeting-more-image"
-            src="graphics/Primer_verano_UG.png"
-            alt="Primer verano de investigación en la Universidad de Guanajuato"
-            width="320"
-            height="320"
-          />
+          <div class="greeting-more-visual greeting-more-visual--ucsd">
+            <img
+              class="greeting-more-image"
+              src="graphics/verano_ucsd.jpg"
+              alt="Verano de investigación en UC San Diego"
+              width="300"
+              height="200"
+            />
+          </div>
+          ${moreRest}
         </div>
-        ${greeting.share ? `<h2 class="greeting-share">${greeting.share}</h2>` : ""}
-        ${closing}
-        ${linkedin}
+        <div class="greeting-after">
+          ${greeting.share ? `<h2 class="greeting-share">${greeting.share}</h2>` : ""}
+          ${closing}
+          ${linkedin}
+        </div>
       </div>
     </section>
   `;
