@@ -2,53 +2,68 @@ const SITE_DATA = {
   intro: {
     title: "Ciencia en el Extranjero",
     subtitle:
-      "Si eres un estudiante mexicano y estás interesado en aprender mas sobre como conseguir una estancia o un verano de investigación, este es el lugar correcto para encontrar una increíble variedad de programas a los que puedes aplicar.",
+      "Si eres un estudiante Mexicano/Latinoamericano y estás interesado en aprender mas sobre como conseguir una estancia o un verano de investigación, este es el lugar correcto para encontrar una increíble variedad de programas a los que puedes aplicar.",
     steps: [
-      {
-        title: "Conoce tus habilidades",
-        text: "Identifica qué sabes hacer ahora y qué te gustaría aprender en un laboratorio o grupo de investigación.",
-      },
-      {
-        title: "Investiga programas",
-        text: "Busca convocatorias nacionales e internacionales que coincidan con tu área, nivel académico y fechas.",
-      },
-      {
-        title: "Revisa elegibilidad",
-        text: "Confirma promedio, semestre, idioma, nacionalidad y documentos que pide cada convocatoria.",
-      },
-      {
-        title: "Prepara tu CV",
-        text: "Arma un CV académico corto: formación, laboratorio, idiomas y habilidades técnicas.",
-      },
-      {
-        title: "Escribe tu carta",
-        text: "Explica quién eres, por qué ese programa y qué puedes aportar. Personalízala en cada envío.",
-      },
-      {
-        title: "Pide recomendaciones",
-        text: "Contacta a profesores que te conozcan con tiempo. Entrégales tu CV y la convocatoria.",
-      },
-      {
-        title: "Contacta profesores",
-        text: "Si la convocatoria lo permite, escribe un correo breve. Si dice que no contactes, no lo hagas.",
-      },
-      {
-        title: "Busca financiamiento",
-        text: "Revisa becas, plazos y requisitos. No esperes a que te acepten para empezar a buscar apoyo.",
-      },
-      {
-        title: "Envía y da seguimiento",
-        text: "Revisa fechas límite, confirma que el envío llegó y ten un plan B de programas.",
-      },
-    ],
-    greeting: [
-      "Bienvenido a mi sitio web de Ciencia en el Extranjero, actualmente soy un estudiante de posgrado en Quimica, mi pasion siempre ha sido la ciencia pero asi como todos, empezar a hacer ciencia no fue la parte mas dificil, sino encontrar en donde poder hacerla. Aqui encontraras uns coleccion de herramientas, recursos y consejos que pueden servirte para tu carrera de investigacion. No olvides que no importa cuantas veces lo tengas que intentar, sino seguir intentandolo hasta que lo logres. ",
-      "Si tienes alguna pregunta o sugerencia, no dudes en contactarme a través de mi correo electrónico o también puedes encontrarme en mi perfil de LinkedIn.",
-      "Gracias por visitar mi sitio web y espero que te sea útil. ¡Buena suerte en tu carrera de investigación!",
-    ],
+          {
+            title: "Prepara tus documentos",
+            text: "Antes de iniciar cualquier aplicación, crea una carpeta donde tengas acceso directo a tu expediente académico, identificaciones (CURP, Acta de nacimiento), comprobantes de domicilio, tambien es bueno tener un folder con constancias de participación, reconocimientos o cualquier documento que sea evidencia de tu participación en cualquier actividad.",
+          },
+          {
+            title: "Conoce el terreno",
+            text: "Pregúntate: ¿Qué es lo que me gustaría aprender? No necesariamente tienes que ser un experto en el tema, pero tiene que llamar tu atención. Inicia con búsquedas generales en google, redes sociales, define a donde quieres apuntar.",
+          },
+          {
+            title: "Revisa TU elegibilidad",
+            text: "Identifica tu contexto, eres estudiante, trabajas, tal vez eres ambos? Estas en tu primer año de preparatoria o tu último, de universidad ? Cada programa tiene sus requisitos mínimos, muchos de los programas internacionales piden experiencia previa o un promedio minimo, si aun no cumples con esos requisitos, apunta a oportunidades nacionales o locales.",
+          },
+          {
+            title: "Prepara tu CV",
+            text: "Crea tu primer CV, una vez que has dominado lo básico (educación, habilidades, idiomas, etc), adaptalo a la convocatoria que piensas aplicar, relaciona tu experiencia general con lo que buscas hacer en esa convocatoria. Pide ayuda, hay un sinfín de profesores/mentores/amigos que están dispuestos a ayudarte a lograr tus metas",
+          },
+          {
+            title: "Prepara tu carta de motivación (Como vas a cambiar al mundo)",
+            text: "Tal vez la parte más importante, Tienes que resolver la pregunta: porqué es importante que seas tu el candidato elegido?  Presentate, habla de tu experiencia, cual es tu objetivo y cómo afecta a tu entorno.",
+          },
+          {
+            title: "Cartas de recomendacion",
+            text: "La divisa global por defecto en el mundo científico, este será un documento esencial para cada convocatoria, y puede que sea la diferencia entre ser aceptado o no. Contacta a profesores que te conozcan, pregúntales si están a hacer una carta de recomendación positiva. Algunos, te pedirán un borrador, asegurate de compartirles tu CV y la convocatoria.",
+          },
+          {
+            title: "Contacta profesores",
+            text: "Si la convocatoria lo especifica, escribe un correo breve presentandote y mostrando interés en lo que hacen, lee sus artículos actuales, y cómo se relaciona a tus intereses o lo que has hecho anteriormente. Si la convocatoria dice que no los contactes, no lo hagas.",
+          },
+          {
+            title: "Fui aceptado, ¿que sigue?",
+            text: "Revisa plazos y requisitos, crea una lista de tareas por realizar. Si el programa no cubre apoyo económico parcial o total, no esperes a que te acepten para empezar a buscar apoyo, contacta instituciones locales, a tu gobierno estatal, tu universidad o escuela, incluso puedes intentar pedir apoyo a empresas o representantes legislativos (regidores, diputados).",
+          },
+          {
+            title: "Esta vez no fui seleccionado, ¿qué puedo hacer?",
+            text: "Está bien sentirse triste, pero no significa que es el final, continúa preparándote y continúa buscando nuevas oportunidades.",
+          },
+        ],
+    greeting: {
+      title: "¡Hola! Me llamo Andrés c:",
+      paragraphs: [
+        "Bienvenido a mi sitio web de Ciencia en el Extranjero, este es un proyecto que inició el verano de 2023. Después de pasar horas buscando guías, oportunidades y contactando profesores, me di cuenta de todas las barreras de conocimiento que existen. Mi objetivo es ayudar a jóvenes a quienes les interesa la ciencia y darles herramientas para navegar el mundo académico que está lleno de jerga complicada y procesos burocráticos.",
+        "Actualmente soy estudiante de posgrado en Química en Canadá. Mi pasión siempre ha sido entender la química que nos rodea: inicié con un contexto poco convencional a los 12 años haciendo experimentos con cosas que encontraba en una caja de herramientas, envases de cristal, productos de limpieza y acceso a internet (por favor… no imites estas acciones). Para mí, empezar a hacer ciencia no fue la parte más difícil ,ya lo hacía en mi patio, sino cómo entrar al mundo donde la ciencia se hace de manera formal.",
+      ],
+      moreTitle: "Un poco más de mí",
+      more: [
+        "Mi primera experiencia real en un laboratorio de investigación fue durante mi segundo año en la preparatoria, en la Universidad de Guanajuato (Guanajuato, México). Pude trabajar con profesores, estudiantes de posgrado y aprender técnicas que nos permiten descubrir moléculas nuevas. Siendo sincero, al principio no creía ser apto o que podía participar en aquellos programas de “Veranos Científicos”, pensaba que solo personas extraordinarias e increíblemente inteligentes podían participar. En retrospectiva, superar ese “ideal” me ayudó a entender que la ciencia es y debe ser para todo aquel que esté dispuesto a aventurarse.",
+        "Gracias al apoyo de mis primeros mentores, pude animarme a aplicar, lo cual a su vez trajo una enorme curva de aprendizaje: solicitar cartas de recomendación, hacer mi propio currículum vitae, mandar correos profesionales a directivos y profesores, crear una carta de motivación y un sinfín de documentos que me tenían de aquí para allá. Eventualmente, después de mucho esfuerzo y apoyo, recibí mi primera carta de aceptación en ese primer verano, un verano que cambió mi vida y me hizo realmente enamorarme de la ciencia. Es por eso que quiero que otros estudiantes que no creen que caben en ese molde de un estudiante ideal, que no cuentan con experiencia, que no se sienten seguros o que no saben por dónde empezar, puedan encontrar un espacio para desmitificar esa burbuja de conocimiento y hacer las cosas más sencillas.",
+      ],
+      share: "Compártelo con alguien a quien pueda servirle c:",
+      closing: [
+        "Aquí encontrarás una colección de herramientas, recursos y consejos que pueden servirte para tu carrera de investigación, así como guias para navegar procesos académicos.  Si no tienes exito la primera vez, no te rindas, incluso si tienes que intentarlo unas 3000 veces -Gary.",
+
+        "Gracias por visitar mi sitio web y espero que te sea útil. Si tienes alguna pregunta o sugerencia, no dudes en contactarme a través de mi correo electrónico (andres.esau.ph@gmail.com) o también puedes encontrarme en mi perfil de LinkedIn ¡Buena suerte en tu carrera de investigación!",
+      ],
+      linkedin: "https://www.linkedin.com/in/aeph/",
+    },
   },
   opportunities: {
     international: [
+      { program: "Max Planck Society", country: "Alemania", institution: " Max Planck Institute", level: ["Universidad", "Posgrado"], funding: "full", link: "https://www.cis.mpg.de/internships/" },
       { program: "iScholar", country: "Estados Unidos", institution: "University of Rochester", level: ["Universidad"], funding: "full", link: "https://www.sas.rochester.edu/chm/undergraduate/i-scholar.html" },
       { program: "ENLACE", country: "Estados Unidos", institution: "University of California San Diego", level: ["Preparatoria", "Universidad", "Posgrado"], funding: "partial", link: "http://resilientmaterials.ucsd.edu/ENLACE" },
       { program: "Globalink", country: "Canadá", institution: "MITACS", level: ["Universidad"], funding: "full", link: "https://www.mitacs.ca/en/programs/globalink" },
@@ -68,8 +83,8 @@ const SITE_DATA = {
       { program: "EPFL School of Life Sciences SPR", country: "Suiza", institution: "Escuela Politécnica Federal de Lausana", level: ["Universidad", "Maestría"], funding: "full", link: "https://www.epfl.ch/schools/sv/education/summer-research-program/" },
       { program: "Openlab Summer Student Programme", country: "Suiza", institution: "CERN", level: ["Universidad", "Maestría"], funding: "partial", link: "https://jobs.smartrecruiters.com/CERN/743999862723511-cern-openlab-summer-student-programme-2023" },
       { program: "NCTS-TCA Summer Student Program", country: "Taiwán", institution: "NCTS", level: ["Universidad"], funding: "partial", link: "https://nctstca.github.io/events/202307-tcassp/" },
-      { program: "US-Mexico Intern Program", country: "EU", institution: "CETUSA", level: ["Universidad", "Recién Graduados"], funding: "partial", link: "https://www.cetusa.org/trainee-internship-programs/us-mexico-intern-program/" },
-      { program: "Yale Young Global Scholars (YYGS)", country: "EU", institution: "Yale University", level: ["Preparatoria"], funding: "partial", link: "https://globalscholars.yale.edu/about" },
+      { program: "US-Mexico Intern Program", country: "Estados Unidos", institution: "CETUSA", level: ["Universidad", "Recién Graduados"], funding: "partial", link: "https://www.cetusa.org/trainee-internship-programs/us-mexico-intern-program/" },
+      { program: "Yale Young Global Scholars (YYGS)", country: "Estados Unidos", institution: "Yale University", level: ["Preparatoria"], funding: "partial", link: "https://globalscholars.yale.edu/about" },
     ],
     national: [
       { program: "Veranos UG", city: "Guanajuato", institution: "Universidad de Guanajuato", level: ["Preparatoria", "Universidad", "Posgrado"], funding: "partial", link: "https://www.ugto.mx/veranos" },
@@ -84,8 +99,8 @@ const SITE_DATA = {
   blog: [
     {
       id: "como-preparar-cv",
-      title: "Cómo preparar tu CV académico para aplicaciones internacionales",
-      date: "2024-08-15",
+      title: "Cómo preparar tu primer CV, y enfocarlo al ámbito académico para aplicaciones Nacionales | Internacionales",
+      date: "2026-08-16",
       excerpt:
         "Una guía práctica sobre qué incluir en tu curriculum vitae cuando aplicas a programas de investigación en el extranjero: formato, secciones clave y errores comunes a evitar.",
       tags: ["CV", "Aplicaciones", "Consejos"],
@@ -99,8 +114,8 @@ const SITE_DATA = {
     },
     {
       id: "carta-motivacion",
-      title: "Escribir una carta de motivación efectiva",
-      date: "2024-07-20",
+      title: "Escribir una carta de motivación efectiva, ¿que historia quieres contar ?",
+      date: "2026-08-16",
       excerpt:
         "La carta de motivos es tu oportunidad de mostrar por qué eres el candidato ideal. Aprende a estructurarla, qué destacar y cómo personalizarla para cada programa.",
       tags: ["Carta de motivos", "Aplicaciones"],
@@ -113,11 +128,11 @@ const SITE_DATA = {
       ],
     },
     {
-      id: "contactar-profesores",
-      title: "¿Cuándo y cómo contactar a profesores extranjeros?",
-      date: "2024-06-10",
+      id: "lidiar-rechazo",
+      title: "¿Si no tienes éxito la primera vez, sigue intentándolo, incluso si tienes que intentarlo 3000 veces | Una lección personal",
+      date: "2026-08-16",
       excerpt:
-        "Contactar a investigadores puede aumentar tus posibilidades, pero no siempre es recomendable. Te explicamos cuándo hacerlo y cómo redactar un correo profesional.",
+        "Una lección personal, como lidiar con el rechazo y mantenerla resilencia en el mundo académico.",
       tags: ["Networking", "Consejos"],
       image: "graphics/Beta-caroteno_draw.png",
       body: [

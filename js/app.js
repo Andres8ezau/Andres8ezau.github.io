@@ -39,20 +39,143 @@ function renderOpportunitiesTable(rows, isNational) {
   </table></div>`;
 }
 
-function renderOpportunities() {
+function uniqueSorted(items) {
+  return [...new Set(items.filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+}
+
+function opportunityCountry(row, isNational) {
+  return isNational ? "México" : row.country;
+}
+
+const LEVEL_FILTER_GROUPS = {
+  Posgrado: ["Posgrado", "Maestría"],
+  Maestría: ["Posgrado", "Maestría"],
+};
+
+function normalizeFilterLevel(level) {
+  return level === "Maestría" ? "Posgrado" : level;
+}
+
+function rowMatchesLevel(rowLevels, filterLevel) {
+  if (!filterLevel) return true;
+  const accepted = LEVEL_FILTER_GROUPS[filterLevel] || [filterLevel];
+  return (rowLevels || []).some((level) => accepted.includes(level));
+}
+
+function getOpportunityFilterOptions() {
   const { international, national } = SITE_DATA.opportunities;
+  const countries = uniqueSorted([
+    ...international.map((row) => row.country),
+    ...(national.length ? ["México"] : []),
+  ]);
+  const levels = uniqueSorted([
+    ...international.flatMap((row) => (row.level || []).map(normalizeFilterLevel)),
+    ...national.flatMap((row) => (row.level || []).map(normalizeFilterLevel)),
+  ]);
+  return { countries, levels };
+}
+
+function rowMatchesFilters(row, isNational, filters) {
+  const country = opportunityCountry(row, isNational);
+  if (filters.country && country !== filters.country) return false;
+  if (!rowMatchesLevel(row.level, filters.level)) return false;
+  if (filters.funding && row.funding !== filters.funding) return false;
+  return true;
+}
+
+function renderSelectOptions(values, allLabel) {
+  return [`<option value="">${allLabel}</option>`]
+    .concat(values.map((value) => `<option value="${value}">${value}</option>`))
+    .join("");
+}
+
+function renderOpportunities() {
+  const { countries, levels } = getOpportunityFilterOptions();
+  const { international, national } = SITE_DATA.opportunities;
+
   return `
     <div class="section-header">
       <h2>Oportunidades de estancias de investigación / veranos</h2>
       <p>Programas nacionales e internacionales para estudiantes de ciencias en México.</p>
     </div>
     <div class="panel-body">
+      <form class="opp-filters" id="opp-filters" aria-label="Filtrar oportunidades">
+        <label class="opp-filter">
+          <span>País</span>
+          <select id="filter-pais" name="pais">
+            ${renderSelectOptions(countries, "Todos los países")}
+          </select>
+        </label>
+        <label class="opp-filter">
+          <span>Nivel académico</span>
+          <select id="filter-nivel" name="nivel">
+            ${renderSelectOptions(levels, "Todos los niveles")}
+          </select>
+        </label>
+        <label class="opp-filter">
+          <span>Financiamiento</span>
+          <select id="filter-financiamiento" name="financiamiento">
+            <option value="">Todos</option>
+            <option value="full">Completo</option>
+            <option value="partial">Parcial</option>
+            <option value="none">N/A</option>
+          </select>
+        </label>
+        <button class="opp-filter-reset" id="filter-reset" type="reset">Limpiar filtros</button>
+      </form>
       <h3 class="subsection-title">Internacional</h3>
-      ${renderOpportunitiesTable(international, false)}
+      <div id="opp-international">${renderOpportunitiesTable(international, false)}</div>
       <h3 class="subsection-title">Nacional</h3>
-      ${renderOpportunitiesTable(national, true)}
+      <div id="opp-national">${renderOpportunitiesTable(national, true)}</div>
     </div>
   `;
+}
+
+function applyOpportunityFilters() {
+  const filters = {
+    country: document.getElementById("filter-pais")?.value || "",
+    level: document.getElementById("filter-nivel")?.value || "",
+    funding: document.getElementById("filter-financiamiento")?.value || "",
+  };
+  const { international, national } = SITE_DATA.opportunities;
+  const intl = international.filter((row) => rowMatchesFilters(row, false, filters));
+  const nat = national.filter((row) => rowMatchesFilters(row, true, filters));
+
+  const intlEl = document.getElementById("opp-international");
+  const natEl = document.getElementById("opp-national");
+  if (intlEl) {
+    intlEl.innerHTML = intl.length
+      ? renderOpportunitiesTable(intl, false)
+      : `<p class="opp-empty">No hay programas internacionales con esos filtros.</p>`;
+  }
+  if (natEl) {
+    natEl.innerHTML = nat.length
+      ? renderOpportunitiesTable(nat, true)
+      : `<p class="opp-empty">No hay programas nacionales con esos filtros.</p>`;
+  }
+}
+
+function initOpportunityFilters() {
+  const form = document.getElementById("opp-filters");
+  if (!form) return;
+  form.addEventListener("change", applyOpportunityFilters);
+  form.addEventListener("reset", () => {
+    requestAnimationFrame(applyOpportunityFilters);
+  });
+}
+
+const GARY_QUOTE =
+  " Si no tienes exito la primera vez, no te rindas, incluso si tienes que intentarlo unas 3000 veces -Gary.";
+
+function formatClosingParagraph(text) {
+  if (text.includes(GARY_QUOTE)) {
+    const formatted = text.replace(
+      GARY_QUOTE,
+      `<span class="greeting-quote">${GARY_QUOTE}</span>`
+    );
+    return `<p>${formatted}</p>`;
+  }
+  return `<p>${text}</p>`;
 }
 
 function formatDate(dateStr) {
@@ -87,7 +210,7 @@ function renderBlog() {
         ${image}
       </div>
       <div class="blog-body">${body}</div>
-      <button class="main-button read-more" type="button" aria-expanded="false">Leer más</button>
+      <button class="main-button read-more read-more--disabled" type="button" disabled aria-disabled="true">Disponible pronto</button>
     </article>`;
     })
     .join("");
@@ -123,7 +246,7 @@ function renderCrashCourse() {
       return `
         <li class="tree-node">
           <div class="tree-square">
-            <span class="tree-index">${String(index + 1).padStart(2, "0")}</span>
+            <span class="tree-index">${String(index).padStart(2, "0")}</span>
             <strong class="tree-title">${title}</strong>
             <p class="tree-text">${text}</p>
           </div>
@@ -253,20 +376,53 @@ function renderHome() {
 }
 
 function renderGreeting() {
-  const { greeting } = SITE_DATA.intro;
-  const paragraphs = greeting.map((text) => `<p>${text}</p>`).join("");
+  const greeting = SITE_DATA.intro.greeting;
+  const intro = (greeting.paragraphs || []).map((text) => `<p>${text}</p>`).join("");
+  const more = (greeting.more || []).map((text) => `<p>${text}</p>`).join("");
+  const closing = (greeting.closing || []).map((text) => formatClosingParagraph(text)).join("");
+  const linkedin = greeting.linkedin
+    ? `<p class="greeting-linkedin">
+        <a href="${greeting.linkedin}" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path fill="#ffffff" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          LinkedIn
+        </a>
+      </p>`
+    : "";
+
   return `
     <section id="greeting" class="greeting-section" aria-label="Presentación">
-      <img
-        class="greeting-photo"
-        src="Me_photo_landing_page.jpeg"
-        alt="Andrés Pérez-Hernández"
-        width="280"
-        height="280"
-      />
+      <div class="greeting-intro">
+        <img
+          class="greeting-photo"
+          src="Me_photo_landing_page.jpeg"
+          alt="Andrés Pérez-Hernández"
+          width="320"
+          height="290"
+        />
+        <div class="greeting-lead">
+          <h2>${greeting.title || "¡Hola! Me llamo Andrés"}</h2>
+          ${intro}
+        </div>
+      </div>
       <div class="greeting-content">
-        <h2>¡Hola! Me llamo Andrés</h2>
-        ${paragraphs}
+        <div class="greeting-more">
+          <div class="greeting-more-copy">
+            ${greeting.moreTitle ? `<h3>${greeting.moreTitle}</h3>` : ""}
+            ${more}
+          </div>
+          <img
+            class="greeting-more-image"
+            src="graphics/Primer_verano_UG.png"
+            alt="Primer verano de investigación en la Universidad de Guanajuato"
+            width="320"
+            height="320"
+          />
+        </div>
+        ${greeting.share ? `<h2 class="greeting-share">${greeting.share}</h2>` : ""}
+        ${closing}
+        ${linkedin}
       </div>
     </section>
   `;
@@ -276,14 +432,15 @@ function initTabs() {
   const panels = {
     inicio: document.getElementById("panel-inicio"),
     oportunidades: document.getElementById("panel-oportunidades"),
-    blog: document.getElementById("panel-blog"),
     recursos: document.getElementById("panel-recursos"),
+    blog: document.getElementById("panel-blog"),
   };
 
   document.getElementById("panel-inicio").innerHTML = renderInicio();
   document.getElementById("panel-oportunidades").innerHTML = renderOpportunities();
   document.getElementById("panel-blog").innerHTML = renderBlog();
   document.getElementById("panel-recursos").innerHTML = renderResources();
+  initOpportunityFilters();
   initBlogExpand();
 
   const buttons = document.querySelectorAll(".tab-btn");
