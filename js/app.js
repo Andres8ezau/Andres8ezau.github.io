@@ -4,6 +4,20 @@ const FUNDING_LABELS = {
   none: { text: "N/A", class: "funding-none" },
 };
 
+const AREA_OPTIONS = [
+  "Ciencias Aplicadas",
+  "Ciencias Sociales",
+  "Ciencias Naturales",
+  "General",
+];
+
+const AREA_CLASSES = {
+  "Ciencias Aplicadas": "area-aplicadas",
+  "Ciencias Sociales": "area-sociales",
+  "Ciencias Naturales": "area-naturales",
+  General: "area-general",
+};
+
 function renderTags(levels) {
   return levels.map((l) => `<span class="tag">${l}</span>`).join("");
 }
@@ -14,10 +28,24 @@ function renderFunding(funding) {
   return `<span class="${f.class}">${icon} ${f.text}</span>`;
 }
 
+function rowAreas(row) {
+  if (Array.isArray(row.area)) return row.area.filter(Boolean);
+  return [row.area || "General"];
+}
+
+function renderArea(row) {
+  return rowAreas(row)
+    .map((area) => {
+      const cls = AREA_CLASSES[area] || "area-general";
+      return `<span class="area-tag ${cls}">${area}</span>`;
+    })
+    .join("");
+}
+
 function renderOpportunitiesTable(rows, isNational) {
   const headers = isNational
-    ? ["Programa", "Ciudad-Estado", "Institución", "Nivel académico", "Financiamiento", "Link"]
-    : ["Programa", "País", "Institución", "Nivel académico", "Financiamiento", "Link"];
+    ? ["Programa", "Ciudad-Estado", "Institución", "Nivel académico", "Área", "Financiamiento", "Link"]
+    : ["Programa", "País", "Institución", "Nivel académico", "Área", "Financiamiento", "Link"];
 
   const body = rows
     .map((row) => {
@@ -27,6 +55,7 @@ function renderOpportunitiesTable(rows, isNational) {
         <td>${location}</td>
         <td>${row.institution}</td>
         <td>${renderTags(row.level)}</td>
+        <td>${renderArea(row)}</td>
         <td>${renderFunding(row.funding)}</td>
         <td><a href="${row.link}" target="_blank" rel="noopener noreferrer">Ver convocatoria</a></td>
       </tr>`;
@@ -79,6 +108,7 @@ function rowMatchesFilters(row, isNational, filters) {
   const country = opportunityCountry(row, isNational);
   if (filters.country && country !== filters.country) return false;
   if (!rowMatchesLevel(row.level, filters.level)) return false;
+  if (filters.area && !rowAreas(row).includes(filters.area)) return false;
   if (filters.funding && row.funding !== filters.funding) return false;
   return true;
 }
@@ -89,9 +119,27 @@ function renderSelectOptions(values, allLabel) {
     .join("");
 }
 
+function renderFaq(items) {
+  if (!items || !items.length) return "";
+  const entries = items
+    .map(
+      (item) => `
+      <details class="faq-item">
+        <summary>${item.q}</summary>
+        <p>${item.a}</p>
+      </details>`
+    )
+    .join("");
+
+  return `
+    <h3 class="subsection-title">Preguntas frecuentes</h3>
+    <div class="faq-list">${entries}</div>
+  `;
+}
+
 function renderOpportunities() {
   const { countries, levels } = getOpportunityFilterOptions();
-  const { international, national } = SITE_DATA.opportunities;
+  const { international, national, faq } = SITE_DATA.opportunities;
 
   return `
     <div class="section-header">
@@ -110,6 +158,12 @@ function renderOpportunities() {
           <span>Nivel académico</span>
           <select id="filter-nivel" name="nivel">
             ${renderSelectOptions(levels, "Todos los niveles")}
+          </select>
+        </label>
+        <label class="opp-filter">
+          <span>Área</span>
+          <select id="filter-area" name="area">
+            ${renderSelectOptions(AREA_OPTIONS, "Todas las áreas")}
           </select>
         </label>
         <label class="opp-filter">
@@ -135,6 +189,7 @@ function applyOpportunityFilters() {
   const filters = {
     country: document.getElementById("filter-pais")?.value || "",
     level: document.getElementById("filter-nivel")?.value || "",
+    area: document.getElementById("filter-area")?.value || "",
     funding: document.getElementById("filter-financiamiento")?.value || "",
   };
   const { international, national } = SITE_DATA.opportunities;
