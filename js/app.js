@@ -60,6 +60,23 @@ function renderArea(row, activeAreas) {
     .join("");
 }
 
+function renderOpportunityCard(row, isNational, filters = {}) {
+  const location = isNational ? row.city : row.country;
+  return `
+    <article class="opp-card">
+      <h4>${row.program}</h4>
+      <p class="opp-card-meta">${location} · ${row.institution}</p>
+      <div class="opp-card-tags">
+        ${renderTags(row.level, filters.levels)}
+        ${renderArea(row, filters.areas)}
+      </div>
+      <div class="opp-card-foot">
+        ${renderFunding(row.funding, filters.fundings)}
+        <a class="main-button" href="${row.link}" target="_blank" rel="noopener noreferrer">Ver convocatoria</a>
+      </div>
+    </article>`;
+}
+
 function renderOpportunitiesTable(rows, isNational, filters = {}) {
   const headers = isNational
     ? ["Programa", "Ciudad-Estado", "Institución", "Nivel académico", "Área", "Financiamiento", "Link"]
@@ -80,10 +97,15 @@ function renderOpportunitiesTable(rows, isNational, filters = {}) {
     })
     .join("");
 
-  return `<div class="table-wrapper"><table>
-    <thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
-    <tbody>${body}</tbody>
-  </table></div>`;
+  const cards = rows.map((row) => renderOpportunityCard(row, isNational, filters)).join("");
+
+  return `<div class="opp-list">
+    <div class="table-wrapper"><table>
+      <thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+      <tbody>${body}</tbody>
+    </table></div>
+    <div class="opp-cards">${cards}</div>
+  </div>`;
 }
 
 function uniqueSorted(items) {
