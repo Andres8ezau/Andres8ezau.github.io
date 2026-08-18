@@ -8,41 +8,59 @@ const AREA_OPTIONS = [
   "Ciencias Aplicadas",
   "Ciencias Sociales",
   "Ciencias Naturales",
-  "General",
 ];
 
 const AREA_CLASSES = {
   "Ciencias Aplicadas": "area-aplicadas",
   "Ciencias Sociales": "area-sociales",
   "Ciencias Naturales": "area-naturales",
-  General: "area-general",
 };
 
-function renderTags(levels) {
-  return levels.map((l) => `<span class="tag">${l}</span>`).join("");
+const FUNDING_OPTIONS = [
+  { value: "full", label: "Completo" },
+  { value: "partial", label: "Parcial" },
+  { value: "none", label: "N/A" },
+];
+
+function isSelected(values, value) {
+  return Array.isArray(values) && values.includes(value);
 }
 
-function renderFunding(funding) {
+function renderTags(levels, activeLevels) {
+  return (levels || []).map((l) => {
+    const value = normalizeFilterLevel(l);
+    const active = isSelected(activeLevels, value) ? " is-active" : "";
+    return `<button type="button" class="tag filter-tag${active}" data-filter="nivel" data-value="${value}">${l}</button>`;
+  }).join("");
+}
+
+function renderFunding(funding, activeFundings) {
   const f = FUNDING_LABELS[funding] || FUNDING_LABELS.none;
   const icon = funding === "full" ? "✓" : funding === "partial" ? "◐" : "✗";
-  return `<span class="${f.class}">${icon} ${f.text}</span>`;
+  const active = isSelected(activeFundings, funding) ? " is-active" : "";
+  return `<button type="button" class="funding-btn ${f.class} filter-tag${active}" data-filter="funding" data-value="${funding}">${icon} ${f.text}</button>`;
 }
 
 function rowAreas(row) {
-  if (Array.isArray(row.area)) return row.area.filter(Boolean);
-  return [row.area || "General"];
+  if (Array.isArray(row.area)) {
+    const areas = row.area.filter((area) => area && area !== "General");
+    return areas.length ? areas : AREA_OPTIONS;
+  }
+  if (!row.area || row.area === "General") return AREA_OPTIONS;
+  return [row.area];
 }
 
-function renderArea(row) {
+function renderArea(row, activeAreas) {
   return rowAreas(row)
     .map((area) => {
-      const cls = AREA_CLASSES[area] || "area-general";
-      return `<span class="area-tag ${cls}">${area}</span>`;
+      const cls = AREA_CLASSES[area] || "area-aplicadas";
+      const active = isSelected(activeAreas, area) ? " is-active" : "";
+      return `<button type="button" class="area-tag ${cls} filter-tag${active}" data-filter="area" data-value="${area}">${area}</button>`;
     })
     .join("");
 }
 
-function renderOpportunitiesTable(rows, isNational) {
+function renderOpportunitiesTable(rows, isNational, filters = {}) {
   const headers = isNational
     ? ["Programa", "Ciudad-Estado", "Institución", "Nivel académico", "Área", "Financiamiento", "Link"]
     : ["Programa", "País", "Institución", "Nivel académico", "Área", "Financiamiento", "Link"];
@@ -54,9 +72,9 @@ function renderOpportunitiesTable(rows, isNational) {
         <td><strong>${row.program}</strong></td>
         <td>${location}</td>
         <td>${row.institution}</td>
-        <td>${renderTags(row.level)}</td>
-        <td>${renderArea(row)}</td>
-        <td>${renderFunding(row.funding)}</td>
+        <td>${renderTags(row.level, filters.levels)}</td>
+        <td>${renderArea(row, filters.areas)}</td>
+        <td>${renderFunding(row.funding, filters.fundings)}</td>
         <td><a href="${row.link}" target="_blank" rel="noopener noreferrer">Ver convocatoria</a></td>
       </tr>`;
     })
@@ -85,10 +103,12 @@ function normalizeFilterLevel(level) {
   return level === "Maestría" ? "Posgrado" : level;
 }
 
-function rowMatchesLevel(rowLevels, filterLevel) {
-  if (!filterLevel) return true;
-  const accepted = LEVEL_FILTER_GROUPS[filterLevel] || [filterLevel];
-  return (rowLevels || []).some((level) => accepted.includes(level));
+function rowMatchesLevel(rowLevels, filterLevels) {
+  if (!filterLevels || !filterLevels.length) return true;
+  return filterLevels.some((filterLevel) => {
+    const accepted = LEVEL_FILTER_GROUPS[filterLevel] || [filterLevel];
+    return (rowLevels || []).some((level) => accepted.includes(level));
+  });
 }
 
 function getOpportunityFilterOptions() {
@@ -107,9 +127,9 @@ function getOpportunityFilterOptions() {
 function rowMatchesFilters(row, isNational, filters) {
   const country = opportunityCountry(row, isNational);
   if (filters.country && country !== filters.country) return false;
-  if (!rowMatchesLevel(row.level, filters.level)) return false;
-  if (filters.area && !rowAreas(row).includes(filters.area)) return false;
-  if (filters.funding && row.funding !== filters.funding) return false;
+  if (!rowMatchesLevel(row.level, filters.levels)) return false;
+  if (filters.areas.length && !rowAreas(row).some((area) => filters.areas.includes(area))) return false;
+  if (filters.fundings.length && !filters.fundings.includes(row.funding)) return false;
   return true;
 }
 
@@ -117,6 +137,18 @@ function renderSelectOptions(values, allLabel) {
   return [`<option value="">${allLabel}</option>`]
     .concat(values.map((value) => `<option value="${value}">${value}</option>`))
     .join("");
+}
+
+function renderFilterChips(options) {
+  const chips = options
+    .map((option) => {
+      const value = typeof option === "string" ? option : option.value;
+      const label = typeof option === "string" ? option : option.label;
+      return `<button type="button" class="opp-chip" data-value="${value}">${label}</button>`;
+    })
+    .join("");
+
+  return `<div class="opp-chip-row" role="group">${chips}</div>`;
 }
 
 function renderFaq(items) {
@@ -145,37 +177,32 @@ function renderOpportunities() {
     <div class="section-header">
       <h2>Oportunidades de estancias de investigación / veranos</h2>
       <p>Programas nacionales e internacionales para estudiantes de ciencias en México/Latinoamérica.</p>
+      <p class="opp-meta">Última actualización: agosto 2026</p>
+      <p class="opp-disclaimer">Las convocatorias cambian. Verifica fechas, requisitos y financiamiento en el sitio oficial de cada programa.</p>
     </div>
     <div class="panel-body">
       <form class="opp-filters" id="opp-filters" aria-label="Filtrar oportunidades">
-        <label class="opp-filter">
+        <div class="opp-filter">
           <span>País</span>
           <select id="filter-pais" name="pais">
             ${renderSelectOptions(countries, "Todos los países")}
           </select>
-        </label>
-        <label class="opp-filter">
+        </div>
+        <div class="opp-filter" data-filter="nivel">
           <span>Nivel académico</span>
-          <select id="filter-nivel" name="nivel">
-            ${renderSelectOptions(levels, "Todos los niveles")}
-          </select>
-        </label>
-        <label class="opp-filter">
+          ${renderFilterChips(levels)}
+        </div>
+        <div class="opp-filter" data-filter="area">
           <span>Área</span>
-          <select id="filter-area" name="area">
-            ${renderSelectOptions(AREA_OPTIONS, "Todas las áreas")}
-          </select>
-        </label>
-        <label class="opp-filter">
+          ${renderFilterChips(AREA_OPTIONS)}
+        </div>
+        <div class="opp-filter" data-filter="funding">
           <span>Financiamiento</span>
-          <select id="filter-financiamiento" name="financiamiento">
-            <option value="">Todos</option>
-            <option value="full">Completo</option>
-            <option value="partial">Parcial</option>
-            <option value="none">N/A</option>
-          </select>
-        </label>
-        <button class="opp-filter-reset" id="filter-reset" type="reset">Limpiar filtros</button>
+          ${renderFilterChips(FUNDING_OPTIONS)}
+        </div>
+        <div class="opp-filters-foot">
+          <button class="opp-filter-reset" id="filter-reset" type="reset">Limpiar</button>
+        </div>
       </form>
       <h3 class="subsection-title">Internacional</h3>
       <div id="opp-international">${renderOpportunitiesTable(international, false)}</div>
@@ -186,13 +213,28 @@ function renderOpportunities() {
   `;
 }
 
-function applyOpportunityFilters() {
-  const filters = {
+function getChipValues(name) {
+  return [...document.querySelectorAll(`[data-filter="${name}"] .opp-chip.is-active`)]
+    .map((chip) => chip.dataset.value)
+    .filter(Boolean);
+}
+
+function toggleChipValue(name, value) {
+  const chip = document.querySelector(`[data-filter="${name}"] .opp-chip[data-value="${value}"]`);
+  if (chip) chip.classList.toggle("is-active");
+}
+
+function getOpportunityFilters() {
+  return {
     country: document.getElementById("filter-pais")?.value || "",
-    level: document.getElementById("filter-nivel")?.value || "",
-    area: document.getElementById("filter-area")?.value || "",
-    funding: document.getElementById("filter-financiamiento")?.value || "",
+    levels: getChipValues("nivel"),
+    areas: getChipValues("area"),
+    fundings: getChipValues("funding"),
   };
+}
+
+function applyOpportunityFilters() {
+  const filters = getOpportunityFilters();
   const { international, national } = SITE_DATA.opportunities;
   const intl = international.filter((row) => rowMatchesFilters(row, false, filters));
   const nat = national.filter((row) => rowMatchesFilters(row, true, filters));
@@ -201,22 +243,40 @@ function applyOpportunityFilters() {
   const natEl = document.getElementById("opp-national");
   if (intlEl) {
     intlEl.innerHTML = intl.length
-      ? renderOpportunitiesTable(intl, false)
+      ? renderOpportunitiesTable(intl, false, filters)
       : `<p class="opp-empty">No hay programas internacionales con esos filtros.</p>`;
   }
   if (natEl) {
     natEl.innerHTML = nat.length
-      ? renderOpportunitiesTable(nat, true)
+      ? renderOpportunitiesTable(nat, true, filters)
       : `<p class="opp-empty">No hay programas nacionales con esos filtros.</p>`;
   }
 }
 
 function initOpportunityFilters() {
   const form = document.getElementById("opp-filters");
-  if (!form) return;
+  const panel = document.getElementById("panel-oportunidades");
+  if (!form || !panel) return;
+
   form.addEventListener("change", applyOpportunityFilters);
+  form.addEventListener("click", (event) => {
+    const chip = event.target.closest(".opp-chip");
+    if (!chip) return;
+    chip.classList.toggle("is-active");
+    applyOpportunityFilters();
+  });
   form.addEventListener("reset", () => {
+    form.querySelectorAll(".opp-chip").forEach((chip) => {
+      chip.classList.remove("is-active");
+    });
     requestAnimationFrame(applyOpportunityFilters);
+  });
+
+  panel.addEventListener("click", (event) => {
+    const tag = event.target.closest(".filter-tag");
+    if (!tag) return;
+    toggleChipValue(tag.dataset.filter, tag.dataset.value);
+    applyOpportunityFilters();
   });
 }
 
@@ -311,23 +371,44 @@ function renderCrashCourse() {
     .join("");
 
   return `
-    <h3 class="subsection-title">Crash Course de Ciencia en el Extranjero</h3>
-    <div class="code-tree" aria-label="Árbol de decisión del crash course">
-      <div class="code-tree-title">
-        <span>crash_course.py - IDE</span>
-        <span class="code-tree-win">_ □ X</span>
+    <div id="crash-course" class="crash-course">
+      <h3 class="subsection-title">Crash Course de Ciencia en el Extranjero</h3>
+      <div class="code-tree" aria-label="Árbol de decisión del crash course">
+        <div class="code-tree-title">
+          <span>crash_course.py - IDE</span>
+          <span class="code-tree-win">_ □ X</span>
+        </div>
+        <div class="code-tree-menu">
+          <span>Archivo</span>
+          <span>Editar</span>
+          <span>Ver</span>
+          <span>Ayuda</span>
+        </div>
+        <div class="code-tree-editor">
+          <ol class="decision-tree">${nodes}</ol>
+        </div>
+        <div class="code-tree-status">Ln 1, Col 1&nbsp;&nbsp;DOS&nbsp;&nbsp;Python</div>
       </div>
-      <div class="code-tree-menu">
-        <span>Archivo</span>
-        <span>Editar</span>
-        <span>Ver</span>
-        <span>Ayuda</span>
-      </div>
-      <div class="code-tree-editor">
-        <ol class="decision-tree">${nodes}</ol>
-      </div>
-      <div class="code-tree-status">Ln 1, Col 1&nbsp;&nbsp;DOS&nbsp;&nbsp;Python</div>
     </div>
+  `;
+}
+
+function renderCrashCoursePreview() {
+  const { steps } = SITE_DATA.intro;
+  const items = steps
+    .map((step, index) => {
+      const title = step.title || `Paso ${index + 1}`;
+      return `<li><span class="start-here-index">${String(index).padStart(2, "0")}</span> ${title}</li>`;
+    })
+    .join("");
+
+  return `
+    <aside class="start-here" aria-label="Empieza aquí">
+      <h2>¿No sabes por dónde empezar?</h2>
+      <p>Sigue mi crash course 101: una guía breve para empezar tu aplicación.</p>
+      <ol class="start-here-steps">${items}</ol>
+      <a class="main-button" href="#crash-course">Empieza aquí</a>
+    </aside>
   `;
 }
 
@@ -427,6 +508,7 @@ function renderHome() {
         />
       </div>
       <p class="home-subtitle">${subtitle}</p>
+      ${renderCrashCoursePreview()}
     </section>
   `;
 }
@@ -549,30 +631,52 @@ function initTabs() {
 
   const buttons = document.querySelectorAll(".tab-btn");
   const validTabs = Object.keys(panels);
+  const hashAliases = { home: "inicio", "crash-course": "recursos" };
 
-  function activateTab(tabId) {
+  function activateTab(tabId, options = {}) {
     buttons.forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.tab === tabId);
     });
     Object.entries(panels).forEach(([id, panel]) => {
       panel.classList.toggle("active", id === tabId);
     });
-    history.replaceState(null, "", `#${tabId}`);
+    history.replaceState(null, "", `#${options.hash || tabId}`);
+    if (options.scrollTo) {
+      requestAnimationFrame(() => {
+        document.getElementById(options.scrollTo)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }
+
+  function activateFromHash(hashValue) {
+    const hash = hashValue.replace("#", "");
+    const resolved = hashAliases[hash] || hash;
+    if (!validTabs.includes(resolved)) {
+      activateTab("inicio");
+      return;
+    }
+    activateTab(resolved, hash === "crash-course" ? { hash, scrollTo: "crash-course" } : {});
   }
 
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => activateTab(btn.dataset.tab));
   });
 
-  window.addEventListener("hashchange", () => {
-    const tabFromHash = location.hash.replace("#", "");
-    const resolved = tabFromHash === "home" ? "inicio" : tabFromHash;
-    if (validTabs.includes(resolved)) activateTab(resolved);
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest('a[href="#crash-course"]');
+    if (!link) return;
+    event.preventDefault();
+    activateTab("recursos", { hash: "crash-course", scrollTo: "crash-course" });
   });
 
-  const hash = location.hash.replace("#", "");
-  const tabFromHash = hash === "home" ? "inicio" : hash;
-  activateTab(validTabs.includes(tabFromHash) ? tabFromHash : "inicio");
+  window.addEventListener("hashchange", () => {
+    activateFromHash(location.hash);
+  });
+
+  activateFromHash(location.hash);
 }
 
 document.addEventListener("DOMContentLoaded", initTabs);
